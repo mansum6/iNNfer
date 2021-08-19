@@ -77,7 +77,15 @@ def get_network_G_config(network_G, scale):
         full_network_G['alpha'] = network_G.pop('alpha', 1)  # interpolation value between percepual and structure
     elif 'sr3' in kind_G:
         # SR3:
-        full_network_G['type'] = "sr3"  
+        full_network_G['type'] = "sr3"
+        full_network_G['in_channe'] = 6
+        full_network_G['out_channel'] = 3
+        full_network_G['inner_channel'] = 64
+        full_network_G['channel_multiplier'] = [1, 2, 4, 8, 8]
+        full_network_G['attn_res'] = [16]
+        full_network_G['res_blocks'] = 2
+        full_network_G['dropout'] = 0.2
+
     elif kind_G in ('pan_net', 'pan'):
         # PAN:
         full_network_G['type'] = "pan_net"  # PAN_net
