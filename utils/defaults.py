@@ -76,7 +76,7 @@ def get_network_G_config(network_G, scale):
         full_network_G['act_type'] = network_G.pop('net_act', None) or network_G.pop('act_type', "leakyrelu")  # swish | leakyrelu
         full_network_G['alpha'] = network_G.pop('alpha', 1)  # interpolation value between percepual and structure
     elif 'sr3' in kind_G:
-        # PPON:
+        # SR3:
         full_network_G['type'] = "sr3"  
     elif kind_G in ('pan_net', 'pan'):
         # PAN:
