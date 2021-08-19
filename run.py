@@ -376,6 +376,7 @@ def main():
 
     meval = defaults['meval']
     strict = defaults['strict']
+    strict = False
     normalize = defaults['normalize'] or args.norm
 
 
