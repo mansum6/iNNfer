@@ -1,5 +1,3 @@
-
-
 def get_network_G_config(network_G, scale):
     kind_G = None
     scale = int(scale)
@@ -78,13 +76,17 @@ def get_network_G_config(network_G, scale):
     elif 'sr3' in kind_G:
         # SR3:
         full_network_G['type'] = "sr3"
-        full_network_G['in_channe'] = 6
+        full_network_G['in_channel'] = 6
         full_network_G['out_channel'] = 3
         full_network_G['inner_channel'] = 64
         full_network_G['channel_multiplier'] = [1, 2, 4, 8, 8]
         full_network_G['attn_res'] = [16]
         full_network_G['res_blocks'] = 2
         full_network_G['dropout'] = 0.2
+        full_network_G['image_size'] = 128
+        full_network_G['diffusion_channels'] = 3
+        full_network_G['diffusion_conditional'] = True
+        full_network_G['phase']= 'infer'
 
     elif kind_G in ('pan_net', 'pan'):
         # PAN:
