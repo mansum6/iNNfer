@@ -1,7 +1,3 @@
-
-
-
-
 def get_network(opt_net):
     """Instantiate the network with configuration"""
 
