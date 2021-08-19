@@ -2,6 +2,7 @@ def get_network(opt_net):
     """Instantiate the network with configuration"""
 
     kind = opt_net.pop('type').lower()
+    print(kind)
 
     # generators
     if kind == 'sr_resnet':
@@ -31,7 +32,7 @@ def get_network(opt_net):
     elif kind == 'ddpm':
         from .ddpm_modules import diffusion, unet
         model = unet.UNet(
-            in_channel=opt_net['unet']['in_channel'],
+            in_channel=opt_net['in_channel'],
             out_channel=opt_net['unet']['out_channel'],
             inner_channel=opt_net['unet']['inner_channel'],
             channel_mults=opt_net['unet']['channel_multiplier'],
@@ -58,29 +59,27 @@ def get_network(opt_net):
     elif kind == 'sr3':
         from .sr3_modules import diffusion, unet
         model = unet.UNet(
-            in_channel=opt_net['unet']['in_channel'],
-            out_channel=opt_net['unet']['out_channel'],
-            inner_channel=opt_net['unet']['inner_channel'],
-            channel_mults=opt_net['unet']['channel_multiplier'],
-            attn_res=opt_net['unet']['attn_res'],
-            res_blocks=opt_net['unet']['res_blocks'],
-            dropout=opt_net['unet']['dropout'],
-            image_size=opt_net['diffusion']['image_size']
+            in_channel=opt_net['in_channel'],
+            out_channel=opt_net['out_channel'],
+            inner_channel=opt_net['inner_channel'],
+            channel_mults=opt_net['channel_multiplier'],
+            attn_res=opt_net['attn_res'],
+            res_blocks=opt_net['res_blocks'],
+            dropout=opt_net['dropout'],
+            image_size=opt_net['image_size']
         )
         net = diffusion.GaussianDiffusion(
             model,
-            image_size=opt_net['diffusion']['image_size'],
-            channels=opt_net['diffusion']['channels'],
+            image_size=opt_net['image_size'],
+            channels=opt_net['diffusion_channels'],
             loss_type='l1',    # L1 or L2
-            conditional=opt_net['diffusion']['conditional'],
-            schedule_opt=opt_net['beta_schedule']['train']
+            conditional=opt_net['diffusion_conditional'],
+            #schedule_opt=opt_net['beta_schedule']['train']
         )
-        if opt['phase'] == 'train':
+        if opt_net['phase'] == 'train':
             # init_weights(net, init_type='kaiming', scale=0.1)
             init_weights(net, init_type='orthogonal')
-        if opt['gpu_ids'] and opt['distributed']:
-            assert torch.cuda.is_available()
-            net = nn.DataParallel(net)
+
         return net
     else:
         raise NotImplementedError('Model [{:s}] not recognized'.format(kind))
