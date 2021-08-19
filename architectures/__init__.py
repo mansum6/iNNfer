@@ -32,6 +32,12 @@ def get_network(opt_net):
     elif kind == 'wbcunet_net':
         from . import WBCNet_arch
         net = WBCNet_arch.UnetGeneratorWBC
+    elif kind == 'ddpm':
+        from .ddpm_modules import diffusion, unet
+        net = unet.UNet
+    elif kind == 'sr3':
+        from .sr3_modules import diffusion, unet
+        net = unet.UNet     
     else:
         raise NotImplementedError('Model [{:s}] not recognized'.format(kind))
 
